@@ -1,0 +1,38 @@
+name: Fiyatları güncelle
+
+on:
+  schedule:
+    - cron: "0 3 * * *"      # her gün 03:00 UTC
+  workflow_dispatch:
+    inputs:
+      komut:
+        description: "normal = güncelle, dogrula = steam_id kontrolü"
+        default: "normal"
+
+permissions:
+  contents: write
+
+jobs:
+  guncelle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Normal çalıştırma
+        if: ${{ github.event.inputs.komut != 'dogrula' }}
+        run: |
+          python guncelle.py kesfet 200
+          python guncelle.py
+      - name: Steam ID doğrulama
+        if: ${{ github.event.inputs.komut == 'dogrula' }}
+        run: python guncelle.py dogrula
+      - name: Değişiklikleri kaydet
+        if: ${{ github.event.inputs.komut != 'dogrula' }}
+        run: |
+          git config user.name "fiyat-botu"
+          git config user.email "bot@users.noreply.github.com"
+          git add games.csv
+          git diff --cached --quiet || git commit -m "Fiyatlar güncellendi"
+          git push
