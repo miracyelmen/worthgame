@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WorthGame – Oyun fiyatları, değer mi?</title>
+<meta name="description" content="PC, PS5, Xbox ve mobil oyun fiyatlarını karşılaştır; oyunun alınır mı alınmaz mı olduğunu gör.">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f4f5fb;--card:#fff;--text:#13151f;--mute:#667085;--line:#e2e5f0;--acc:#6d4aff;--acc2:#00b8d9;--buy:#12a150;--wait:#d98a00;--no:#d93636}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c0e16;--card:#161926;--text:#eef0f8;--mute:#9aa3bb;--line:#262a3b;--acc:#9a82ff;--acc2:#4fd8f0;--buy:#34d27b;--wait:#f2b441;--no:#ff6b6b}}
+:root[data-theme="dark"]{--bg:#0c0e16;--card:#161926;--text:#eef0f8;--mute:#9aa3bb;--line:#262a3b;--acc:#9a82ff;--acc2:#4fd8f0;--buy:#34d27b;--wait:#f2b441;--no:#ff6b6b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45}
+header{background:linear-gradient(120deg,var(--acc),var(--acc2));color:#fff;padding:26px 16px 22px}
+.in{max-width:1100px;margin:0 auto}
+.logo{font-size:2rem;font-weight:800;letter-spacing:-.5px;margin:0}
+.logo span{opacity:.75;font-weight:600}
+header p{margin:4px 0 14px;opacity:.92}
+#q{width:100%;max-width:460px;padding:12px 14px;border:0;border-radius:12px;font-size:1rem;background:#fff;color:#13151f}
+main{padding:16px 16px 48px}
+.row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;align-items:center}
+.lbl{font-size:.75rem;color:var(--mute);margin-right:4px;min-width:60px}
+.chip{padding:7px 13px;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;cursor:pointer;font-size:.88rem}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+select{padding:7px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);font-size:.9rem}
+.cnt{color:var(--mute);font-size:.85rem;margin:6px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.top{display:flex;justify-content:space-between;gap:10px}
+.card h2{font-size:1.05rem;margin:0}
+.cat{font-size:.75rem;color:var(--acc);font-weight:600}
+.score{min-width:44px;height:44px;border-radius:10px;display:grid;place-items:center;font-weight:800;color:#fff}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+td,th{padding:6px 4px;text-align:left;border-top:1px solid var(--line)}
+th{font-weight:500;color:var(--mute);border-top:0;font-size:.75rem}
+td.p{font-weight:600}
+s{color:var(--mute);font-weight:400;font-size:.8rem}
+.off{color:var(--buy);font-size:.8rem}
+.v{display:inline-block;padding:3px 9px;border-radius:999px;font-size:.76rem;font-weight:700;color:#fff;white-space:nowrap}
+.v.buy{background:var(--buy)}.v.wait{background:var(--wait)}.v.no{background:var(--no)}
+tr.best{background:color-mix(in srgb,var(--acc) 10%,transparent)}
+.why{font-size:.84rem;color:var(--mute);margin:0}
+.empty{color:var(--mute);text-align:center;padding:40px 0}
+.more{display:block;margin:20px auto 0;padding:11px 22px}
+footer{color:var(--mute);font-size:.8rem;text-align:center;padding:0 16px 30px}
+.card{cursor:pointer;transition:transform .12s,border-color .12s}
+.card:hover{border-color:var(--acc);transform:translateY(-2px)}
+.card h2 a{color:inherit;text-decoration:none}
+.more-l{font-size:.85rem;color:var(--acc);font-weight:600;text-decoration:none}
+#detail{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+#detail h3{margin:22px 0 8px}#detail ul{margin:0;padding-left:20px}
+.back{display:inline-block;margin-bottom:14px;color:var(--acc);text-decoration:none;font-weight:600}
+.dh{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.dt{font-size:1.8rem;margin:0}
+.box{margin:12px 0;padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--acc) 10%,transparent)}
+.dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:14px}
+.dg div{border:1px solid var(--line);border-radius:10px;padding:10px}
+.dg small{display:block;color:var(--mute)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.dnav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin:-20px -20px 16px;padding:12px 20px;background:var(--card);border-bottom:1px solid var(--line);border-radius:16px 16px 0 0}
+.dnav .back{margin:0}
+</style>
+</head>
+<body>
+<header><div class="in">
+  <h1 class="logo"><a href="#" style="color:inherit;text-decoration:none">Worth<span>Game</span></a></h1>
+  <p>PC, PS5, Xbox ve mobil fiyatlarını karşılaştır. Oyun bu fiyata değer mi, hemen gör.</p>
+  <input id="q" type="search" placeholder="Oyun ara…" aria-label="Oyun ara">
+</div></header>
+<main><div class="in"><div id="detail" hidden></div><div id="listview">
+  <div class="row"><span class="lbl">Kategori</span><span id="cats" class="row" style="margin:0"></span></div>
+  <div class="row"><span class="lbl">Platform</span><span id="plat" class="row" style="margin:0"></span></div>
+  <div class="row"><span class="lbl">Karar</span><span id="ver" class="row" style="margin:0"></span>
+    <select id="sort" aria-label="Sırala"><option value="puan">Sırala: Puan</option><option value="fiyat">Sırala: En ucuz</option><option value="indirim">Sırala: En çok indirim</option></select></div>
+  <div class="cnt" id="cnt"></div>
+  <div class="grid" id="grid"></div>
+  <button class="chip more" id="more" hidden>Daha fazla göster</button>
+</div></div></main>
+<footer>Örnek veriler temsilidir. Fiyatlar ve puanlar games.csv dosyasından okunur.</footer>
+
+<script type="text/csv" id="csv">
+ad,kategori,puan,pc_liste,pc_guncel,ps5_liste,ps5_guncel,xbox_liste,xbox_guncel,mobil_liste,mobil_guncel
+Doom Eternal,FPS,88,800,240,1200,600,1200,600,,
+Borderlands 3,FPS,79,900,270,1400,700,1400,700,,
+Call of Duty: Modern Warfare III,FPS,70,2000,1700,2600,2600,2600,2600,,
+Metro Exodus,FPS,82,700,175,1100,550,1100,550,,
+Far Cry 6,FPS,73,1300,520,1700,850,1700,850,,
+Elden Ring,RPG,96,1100,660,1600,1280,1600,1280,,
+Baldur's Gate 3,RPG,97,1400,1400,1900,1900,1900,1900,,
+Cyberpunk 2077,RPG,86,1000,400,1500,900,1500,900,,
+The Witcher 3: Wild Hunt,RPG,93,700,175,1100,440,1100,440,,
+Hogwarts Legacy,RPG,84,1400,700,1900,1330,1900,1330,,
+God of War Ragnarök,Aksiyon-Macera,94,1500,1200,2100,1470,,,,
+Marvel's Spider-Man 2,Aksiyon-Macera,90,1500,1500,2000,1400,,,,
+Red Dead Redemption 2,Aksiyon-Macera,95,1300,520,1800,720,1800,720,,
+Horizon Forbidden West,Aksiyon-Macera,88,1400,840,1900,1140,,,,
+Gotham Knights,Aksiyon-Macera,62,1200,960,1700,1360,1700,1360,,
+EA Sports FC 25,Spor,68,1700,1700,2200,2200,2200,2200,,
+NBA 2K25,Spor,70,1500,1200,2000,1700,2000,1700,,
+Forza Horizon 5,Yarış,92,1200,960,1700,1700,1700,1700,,
+Gran Turismo 7,Yarış,87,,,1900,1330,,,,
+Need for Speed Unbound,Yarış,74,1100,330,1500,600,1500,600,,
+Civilization VI,Strateji,88,900,225,1200,480,1200,480,450,225
+XCOM 2,Strateji,87,800,160,,,880,180,350,175
+Resident Evil 4,Korku,93,1000,600,1500,900,1500,900,800,560
+Dead Space,Korku,89,1300,650,1800,1080,1800,1080,,
+Alan Wake 2,Korku,89,1300,910,1900,1330,1900,1330,,
+</script>
+<script>
+const $=id=>document.getElementById(id);
+// ================= OYUN DETAY SAYFALARI =================
+// Bir oyunun detay sayfasını düzenlemek için aşağıya şu şekilde ekle
+// (anahtar, games.csv'deki "ad" ile birebir aynı olmalı). Yazmadığın alanlar örnek metinle dolar:
+//
+// "Elden Ring": {
+//   ozet: "Oyunun tanıtımı...",
+//   gelistirici: "FromSoftware", cikis: "2022", sure: "≈ 100 saat", mod: "Tek / Çok oyunculu",
+//   ozellikler: ["Özellik 1", "Özellik 2"],
+//   artilar: ["Artı 1"], eksiler: ["Eksi 1"]
+// },
+const DETAYLAR={
+};
+// Detayı yazılmamış oyunlarda görünen örnek içerik:
+const YER={
+  ozet:"Bu bir örnek metindir. Buraya oyunun konusunu, oynanış tarzını ve neden oynanmaya değer (ya da değmez) olduğunu birkaç cümleyle yazabilirsin. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  gelistirici:"Örnek Stüdyo",cikis:"2024",sure:"≈ 40 saat",mod:"Tek kişilik",
+  ozellikler:["Örnek özellik: Geniş ve keşfetmesi keyifli bir dünya","Örnek özellik: Detaylı karakter ve ekipman geliştirme","Örnek özellik: Tek kişilik ve çevrimiçi oyun seçenekleri","Örnek özellik: Etkileyici grafikler ve ses tasarımı"],
+  artilar:["Örnek artı: Akıcı oynanış","Örnek artı: Güçlü hikâye anlatımı","Örnek artı: İçerik bolluğu"],
+  eksiler:["Örnek eksi: Başlangıçta zorlayıcı olabilir","Örnek eksi: Bazı bölümler tekrara düşüyor"]
+};
+// ========================================================
+const PL=["PC","PS5","Xbox","Mobil"],STEP=24;
+const LBL={PC:"PC",PS5:"PS5",Xbox:"Xbox Series X/S",Mobil:"Mobil"};
+let ALL=[],cat="Tümü",plat="Hepsi",ver="Hepsi",q="",sort="puan",shown=STEP;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt=n=>n.toLocaleString("tr-TR")+" ₺";
+const num=x=>{let t=String(x||"").replace(/[₺\s]/g,"");if(/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(t))t=t.replace(/\./g,"");const v=parseFloat(t.replace(",","."));return v>0?v:null};
+const color=r=>r>=85?"var(--buy)":r>=75?"var(--wait)":"var(--no)";
+
+function parseCSV(t){
+  const f=t.split(/\r?\n/)[0],D=(f.match(/;/g)||[]).length>(f.match(/,/g)||[]).length?";":",";
+  const rows=[];let r=[],c="",inq=false;
+  for(let i=0;i<t.length;i++){const ch=t[i];
+    if(inq){if(ch=='"'){if(t[i+1]=='"'){c+='"';i++}else inq=false}else c+=ch}
+    else if(ch=='"')inq=true;
+    else if(ch==D){r.push(c);c=""}
+    else if(ch=="\n"||ch=="\r"){if(ch=="\r"&&t[i+1]=="\n")i++;r.push(c);c="";if(r.some(x=>x.trim()))rows.push(r);r=[]}
+    else c+=ch}
+  r.push(c);if(r.some(x=>x.trim()))rows.push(r);return rows;
+}
+function toGames(t){
+  const rows=parseCSV(t),h=rows.shift().map(x=>x.trim().toLowerCase()),ix=k=>h.indexOf(k);
+  return rows.map(r=>{
+    const g={n:(r[ix("ad")]||"").trim(),c:(r[ix("kategori")]||"").trim()||"Diğer",r:parseInt(r[ix("puan")])||0,p:{}};
+    for(const p of PL){const k=p.toLowerCase(),now=num(r[ix(k+"_guncel")]),b=num(r[ix(k+"_liste")]);
+      g.p[p]=now?{now,base:Math.max(b||now,now)}:null}
+    return g;
+  }).filter(g=>g.n&&PL.some(p=>g.p[p]));
+}
+function verdict(r,base,now){
+  const d=Math.round((1-now/base)*100);
+  if(r<75)return{k:"no",t:"❌ Alma",w:`Puan düşük (${r}); fiyatına değmez.`,d};
+  if(d>=30||(r>=90&&d>=20))return{k:"buy",t:"✅ Al",w:`İyi oyun (${r}) ve %${d} indirimde.`,d};
+  if(r>=85)return{k:"wait",t:"⏳ İndirim bekle",w:`Çok iyi oyun (${r}) ama indirim sadece %${d}.`,d};
+  return{k:"wait",t:"⏳ İndirim bekle",w:`Fena değil (${r}) ama bu fiyat yüksek.`,d};
+}
+function chips(el,items,cur,set){
+  el.innerHTML=items.map(([v,l])=>`<button class="chip ${v===cur?"on":""}" data-v="${esc(v)}">${esc(l)}</button>`).join("");
+  el.onclick=e=>{const b=e.target.closest("button");if(b){set(b.dataset.v);shown=STEP;render()}};
+}
+function render(){
+  const cats=["Tümü",...[...new Set(ALL.map(g=>g.c))].sort((a,b)=>a.localeCompare(b,"tr"))];
+  const cnt=c=>c==="Tümü"?ALL.length:ALL.filter(g=>g.c===c).length;
+  chips($("cats"),cats.map(c=>[c,`${c} (${cnt(c)})`]),cat,v=>cat=v);
+  chips($("plat"),["Hepsi",...PL].map(x=>[x,LBL[x]||x]),plat,v=>plat=v);
+  chips($("ver"),["Hepsi","✅ Al","⏳ İndirim bekle","❌ Alma"].map(x=>[x,x]),ver,v=>ver=v);
+  let list=[];
+  for(const g of ALL){
+    if(cat!=="Tümü"&&g.c!==cat)continue;
+    if(q&&!g.n.toLowerCase().includes(q))continue;
+    let rows=PL.filter(p=>g.p[p]&&(plat==="Hepsi"||plat===p)).map(p=>({p,...g.p[p],v:verdict(g.r,g.p[p].base,g.p[p].now)}));
+    if(ver!=="Hepsi")rows=rows.filter(r=>r.v.t===ver);
+    if(!rows.length)continue;
+    list.push({g,rows,min:Math.min(...rows.map(r=>r.now)),maxd:Math.max(...rows.map(r=>r.v.d))});
+  }
+  list.sort((a,b)=>sort==="fiyat"?a.min-b.min:sort==="indirim"?b.maxd-a.maxd:b.g.r-a.g.r);
+  $("cnt").textContent=`${list.length} oyun`;
+  $("grid").innerHTML=list.slice(0,shown).map(({g,rows,min})=>{
+    const top=rows.find(r=>r.now===min);
+    return `<div class="card" data-n="${esc(g.n)}"><div class="top"><div><h2><a href="#oyun=${encodeURIComponent(g.n)}">${esc(g.n)}</a></h2><div class="cat">${esc(g.c)}</div></div>
+    <div class="score" style="background:${color(g.r)}" title="Puan">${g.r}</div></div>
+    <table><tr><th>Platform</th><th>Fiyat</th><th>Karar</th></tr>
+    ${rows.map(r=>`<tr class="${r.now===min?"best":""}"><td>${LBL[r.p]}</td><td class="p">${fmt(r.now)}${r.v.d>0?` <s>${fmt(r.base)}</s> <span class="off">-%${r.v.d}</span>`:""}</td><td><span class="v ${r.v.k}">${r.v.t}</span></td></tr>`).join("")}</table>
+    <p class="why">💡 En ucuz: <b>${LBL[top.p]}</b> (${fmt(top.now)}). ${top.v.w}</p><a class="more-l" href="#oyun=${encodeURIComponent(g.n)}">Detayları gör →</a></div>`;
+  }).join("")||'<div class="empty">Sonuç bulunamadı.</div>';
+  $("more").hidden=list.length<=shown;
+}
+$("q").oninput=e=>{q=e.target.value.trim().toLowerCase();shown=STEP;if(location.hash)location.hash="";render()};
+$("sort").onchange=e=>{sort=e.target.value;render()};
+function detailHTML(g){
+  const d={...YER,...(DETAYLAR[g.n]||{})};
+  const rows=PL.filter(p=>g.p[p]).map(p=>({p,...g.p[p],v:verdict(g.r,g.p[p].base,g.p[p].now)}));
+  const min=Math.min(...rows.map(r=>r.now)),top=rows.find(r=>r.now===min);
+  const li=a=>a.map(x=>`<li>${esc(x)}</li>`).join("");
+  return `<div class="dnav"><a class="back" href="#">← Tüm oyunlar</a></div>
+  <div class="dh"><div><h2 class="dt">${esc(g.n)}</h2><div class="cat">${esc(g.c)}</div></div><div class="score" style="background:${color(g.r)}" title="Puan">${g.r}</div></div>
+  <div class="box"><span class="v ${top.v.k}">${top.v.t}</span> <b>${LBL[top.p]}</b> platformunda ${fmt(top.now)} · ${top.v.w}</div>
+  <h3>Hakkında</h3><p>${esc(d.ozet)}</p>
+  <div class="dg">${[["Geliştirici",d.gelistirici],["Çıkış yılı",d.cikis],["Tahmini süre",d.sure],["Oyun modu",d.mod]].map(([k,v])=>`<div><small>${k}</small><b>${esc(v)}</b></div>`).join("")}</div>
+  <h3>Özellikler</h3><ul>${li(d.ozellikler)}</ul>
+  <div class="two"><div><h3>👍 Artılar</h3><ul>${li(d.artilar)}</ul></div><div><h3>👎 Eksiler</h3><ul>${li(d.eksiler)}</ul></div></div>
+  <h3>Fiyatlar</h3><table><tr><th>Platform</th><th>Fiyat</th><th>Karar</th></tr>
+  ${rows.map(r=>`<tr class="${r.now===min?"best":""}"><td>${LBL[r.p]}</td><td class="p">${fmt(r.now)}${r.v.d>0?` <s>${fmt(r.base)}</s> <span class="off">-%${r.v.d}</span>`:""}</td><td><span class="v ${r.v.k}">${r.v.t}</span></td></tr>`).join("")}</table><a class="chip" href="#" style="display:inline-block;text-decoration:none;margin-top:20px">← Tüm oyunlara dön</a>`;
+}
+let lastY=0;
+function route(){
+  const m=location.hash.match(/^#oyun=(.+)$/);
+  let g=null;
+  if(m){try{const n=decodeURIComponent(m[1]);g=ALL.find(x=>x.n===n)}catch(e){}}
+  if(g&&!$("listview").hidden)lastY=window.scrollY;
+  $("detail").hidden=!g;$("listview").hidden=!!g;
+  if(g){$("detail").innerHTML=detailHTML(g);document.title=g.n+" – WorthGame";window.scrollTo(0,0)}
+  else{document.title="WorthGame – Oyun fiyatları, değer mi?";window.scrollTo(0,lastY)}
+}
+window.onhashchange=route;
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&location.hash.startsWith("#oyun="))location.hash=""});
+$("grid").onclick=e=>{const c=e.target.closest(".card");if(c&&!e.target.closest("a"))location.hash="oyun="+encodeURIComponent(c.dataset.n)};
+$("more").onclick=()=>{shown+=STEP;render()};
+
+(async()=>{
+  let t=$("csv").textContent.trim();
+  try{const r=await fetch("games.csv",{cache:"no-cache"});
+    if(r.ok){const x=await r.text();if(/^\s*ad\s*[,;]/i.test(x))t=x}}catch(e){}
+  ALL=toGames(t);render();route();
+})();
+</script>
+</body>
+</html>
